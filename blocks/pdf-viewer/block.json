@@ -1,0 +1,74 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "maxtdesign/pdf-viewer",
+	"version": "1.0.0",
+	"title": "PDF Viewer",
+	"category": "embed",
+	"icon": "pdf",
+	"description": "Embed PDFs with instant preview and zero layout shift.",
+	"keywords": [
+		"pdf",
+		"document",
+		"embed",
+		"viewer",
+		"file"
+	],
+	"textdomain": "maxtdesign-pdf-viewer",
+	"attributes": {
+		"pdfId": {
+			"type": "number",
+			"default": 0
+		},
+		"pdfUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"width": {
+			"type": "string",
+			"default": "100%"
+		},
+		"loadBehavior": {
+			"type": "string",
+			"default": "click",
+			"enum": [
+				"click",
+				"visible",
+				"immediate"
+			]
+		},
+		"showToolbar": {
+			"type": "boolean",
+			"default": true
+		},
+		"showDownload": {
+			"type": "boolean",
+			"default": true
+		},
+		"showPrint": {
+			"type": "boolean",
+			"default": true
+		},
+		"showFullscreen": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"supports": {
+		"align": [
+			"wide",
+			"full"
+		],
+		"html": false,
+		"anchor": true,
+		"className": true,
+		"spacing": {
+			"margin": true,
+			"padding": false
+		}
+	},
+	"editorScript": "file:./build/index.js",
+	"editorStyle": "file:./build/index.css",
+	"render": "file:./render.php"
+}
+

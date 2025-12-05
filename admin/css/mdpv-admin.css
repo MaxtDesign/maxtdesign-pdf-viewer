@@ -1,0 +1,276 @@
+/**
+ * MaxtDesign PDF Viewer - Admin Styles
+ *
+ * @package MaxtDesign\PDFViewer
+ * @since 1.0.0
+ */
+
+/* ==========================================================================
+   Layout
+   ========================================================================== */
+
+.mdpv-admin-wrap {
+    max-width: 1200px;
+}
+
+.mdpv-nav-tabs {
+    margin-bottom: 20px;
+}
+
+.mdpv-tab-content {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-top: none;
+    padding: 20px;
+}
+
+/* ==========================================================================
+   Server Info Tab
+   ========================================================================== */
+
+.mdpv-server-info {
+    max-width: 800px;
+}
+
+.mdpv-capabilities-table {
+    margin: 20px 0;
+}
+
+.mdpv-capabilities-table th,
+.mdpv-capabilities-table td {
+    padding: 12px 15px;
+}
+
+.mdpv-capabilities-table td:first-child {
+    width: 180px;
+}
+
+.mdpv-capabilities-table td:nth-child(2) {
+    width: 150px;
+}
+
+/* Status badges */
+.mdpv-status {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.mdpv-status-success {
+    background: #d4edda;
+    color: #155724;
+}
+
+.mdpv-status-warning {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.mdpv-status-error {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Recommended method */
+.mdpv-recommended-method {
+    margin: 30px 0;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.mdpv-recommended-method h3 {
+    margin-top: 0;
+}
+
+.mdpv-method-badge {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.mdpv-method-imagemagick {
+    background: #d4edda;
+    color: #155724;
+}
+
+.mdpv-method-ghostscript {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.mdpv-method-none {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.mdpv-refresh-capabilities {
+    margin-top: 20px;
+}
+
+.mdpv-refresh-capabilities .spinner {
+    float: none;
+    margin-left: 10px;
+}
+
+/* ==========================================================================
+   Tools Tab
+   ========================================================================== */
+
+.mdpv-tools {
+    display: grid;
+    gap: 20px;
+}
+
+.mdpv-tool-card {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    padding: 20px;
+}
+
+.mdpv-tool-card h2 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/* Stats grid */
+.mdpv-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.mdpv-stat {
+    text-align: center;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.mdpv-stat-value {
+    display: block;
+    font-size: 28px;
+    font-weight: 600;
+    color: #1e1e1e;
+    line-height: 1.2;
+}
+
+.mdpv-stat-label {
+    display: block;
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Actions */
+.mdpv-bulk-actions,
+.mdpv-cache-actions {
+    margin: 20px 0;
+}
+
+.mdpv-bulk-actions .spinner,
+.mdpv-cache-actions .spinner {
+    float: none;
+    margin-left: 10px;
+}
+
+/* Progress bar */
+.mdpv-progress-container {
+    margin: 20px 0;
+}
+
+.mdpv-progress-bar {
+    height: 20px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.mdpv-progress-fill {
+    height: 100%;
+    background: #0073aa;
+    transition: width 0.3s ease;
+    width: 0;
+}
+
+.mdpv-progress-text {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #666;
+}
+
+/* Shortcode reference */
+.mdpv-shortcode-example {
+    margin: 15px 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-left: 4px solid #0073aa;
+    font-family: monospace;
+    font-size: 14px;
+}
+
+.mdpv-shortcode-example code {
+    background: none;
+    padding: 0;
+}
+
+/* ==========================================================================
+   Messages
+   ========================================================================== */
+
+.mdpv-message {
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin: 15px 0;
+}
+
+.mdpv-message-success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.mdpv-message-error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.mdpv-message-info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media screen and (max-width: 782px) {
+    .mdpv-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .mdpv-capabilities-table td:first-child {
+        width: auto;
+    }
+
+    .mdpv-capabilities-table td:nth-child(2) {
+        width: auto;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .mdpv-stats-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,738 @@
+# Copyright (C) 2024 MaxtDesign
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: MaxtDesign PDF Viewer 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxtdesign-pdf-viewer\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-01-01T00:00:00+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI\n"
+"X-Domain: maxtdesign-pdf-viewer\n"
+
+#: maxtdesign-pdf-viewer.php:41
+#, php-format
+msgid "%1$s requires PHP version %2$s or higher. You are running PHP %3$s. Please upgrade your PHP version."
+msgstr ""
+
+#: maxtdesign-pdf-viewer.php:95
+msgid "Settings"
+msgstr ""
+
+#: includes/class-mdpv-plugin.php:161
+msgid "Cannot unserialize singleton"
+msgstr ""
+
+#: includes/class-mdpv-plugin.php:212
+#, php-format
+msgid "%1$s requires WordPress version %2$s or higher. You are running WordPress %3$s. Please upgrade WordPress."
+msgstr ""
+
+#: includes/class-mdpv-plugin.php:633
+msgid "Loading document..."
+msgstr ""
+
+#: includes/class-mdpv-plugin.php:634
+msgid "Failed to load document"
+msgstr ""
+
+#: includes/class-mdpv-plugin.php:635
+msgid "Failed to load viewer module"
+msgstr ""
+
+#: includes/class-mdpv-plugin.php:636
+msgid "Page"
+msgstr ""
+
+#: includes/class-mdpv-plugin.php:637
+msgid "of"
+msgstr ""
+
+#: includes/class-mdpv-plugin.php:638
+msgid "Zoom"
+msgstr ""
+
+#: includes/class-mdpv-plugin.php:639
+msgid "Zoom in"
+msgstr ""
+
+#: includes/class-mdpv-plugin.php:640
+msgid "Zoom out"
+msgstr ""
+
+#: includes/class-mdpv-plugin.php:641
+msgid "Previous page"
+msgstr ""
+
+#: includes/class-mdpv-plugin.php:642
+msgid "Next page"
+msgstr ""
+
+#: includes/class-mdpv-plugin.php:643
+msgid "Download"
+msgstr ""
+
+#: includes/class-mdpv-plugin.php:644
+msgid "Print"
+msgstr ""
+
+#: includes/class-mdpv-plugin.php:645
+msgid "Fullscreen"
+msgstr ""
+
+#: includes/class-mdpv-plugin.php:646
+msgid "Exit fullscreen"
+msgstr ""
+
+#: includes/class-mdpv-renderer.php:52
+msgid "No PDF selected."
+msgstr ""
+
+#: includes/class-mdpv-renderer.php:58
+msgid "PDF not found."
+msgstr ""
+
+#: includes/class-mdpv-renderer.php:63
+msgid "Invalid file type. PDF required."
+msgstr ""
+
+#: includes/class-mdpv-renderer.php:202
+#, php-format
+msgid "PDF Document: %s"
+msgstr ""
+
+#: includes/class-mdpv-renderer.php:211
+#, php-format
+msgid "%1$s - Page 1 of %2$d"
+msgstr ""
+
+#: includes/class-mdpv-renderer.php:230
+#, php-format
+msgid "Open interactive viewer for %s"
+msgstr ""
+
+#: includes/class-mdpv-renderer.php:242
+#, php-format
+msgid "View Document (%d pages)"
+msgstr ""
+
+#: includes/class-mdpv-renderer.php:252
+msgid "Loading document..."
+msgstr ""
+
+#: includes/class-mdpv-extractor.php:119
+msgid "PDF file not found"
+msgstr ""
+
+#: includes/class-mdpv-extractor.php:127
+msgid "Failed to extract metadata"
+msgstr ""
+
+#: includes/class-mdpv-extractor.php:142
+msgid "Preview generation failed"
+msgstr ""
+
+#: includes/class-mdpv-extractor.php:491
+msgid "Failed to create cache directory"
+msgstr ""
+
+#: includes/class-mdpv-extractor.php:565
+msgid "No preview extraction method available. Install ImageMagick or Ghostscript."
+msgstr ""
+
+#: includes/class-mdpv-rest-api.php:65
+msgid "PDF attachment ID."
+msgstr ""
+
+#: includes/class-mdpv-rest-api.php:87
+msgid "PDF attachment ID."
+msgstr ""
+
+#: includes/class-mdpv-rest-api.php:95
+msgid "Force regeneration even if already processed."
+msgstr ""
+
+#: includes/class-mdpv-rest-api.php:140
+msgid "Attachment not found."
+msgstr ""
+
+#: includes/class-mdpv-rest-api.php:148
+msgid "Attachment is not a PDF."
+msgstr ""
+
+#: includes/class-mdpv-rest-api.php:173
+msgid "Attachment not found."
+msgstr ""
+
+#: includes/class-mdpv-rest-api.php:181
+msgid "Attachment is not a PDF."
+msgstr ""
+
+#: includes/class-mdpv-rest-api.php:192
+msgid "PDF already processed."
+msgstr ""
+
+#: includes/class-mdpv-rest-api.php:207
+msgid "Failed to process PDF."
+msgstr ""
+
+#: includes/class-mdpv-rest-api.php:215
+msgid "PDF processed successfully."
+msgstr ""
+
+#: includes/class-mdpv-rest-api.php:394
+msgid "Attachment ID."
+msgstr ""
+
+#: includes/class-mdpv-rest-api.php:399
+msgid "Attachment title."
+msgstr ""
+
+#: includes/class-mdpv-rest-api.php:403
+msgid "PDF file URL."
+msgstr ""
+
+#: includes/class-mdpv-rest-api.php:408
+msgid "Whether preview has been generated."
+msgstr ""
+
+#: includes/class-mdpv-rest-api.php:412
+msgid "Number of pages in PDF."
+msgstr ""
+
+#: includes/class-mdpv-rest-api.php:416
+msgid "Preview image URL."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:81
+msgid "PDF Viewer Settings"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:82
+msgid "PDF Viewer"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:107
+msgid "General Settings"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:115
+msgid "Auto-Generate Previews"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:121
+msgid "Automatically generate preview images when PDFs are uploaded."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:128
+msgid "Preview Quality"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:135
+msgid "Low (72 DPI) - Smallest file size"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:136
+msgid "Medium (150 DPI) - Balanced"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:137
+msgid "High (300 DPI) - Best quality"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:139
+msgid "Higher quality means larger preview files but sharper images."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:146
+msgid "Display Defaults"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:154
+msgid "Load Behavior"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:161
+msgid "On Click - Load when user clicks"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:162
+msgid "When Visible - Load when scrolled into view"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:163
+msgid "Immediately - Load on page load"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:165
+msgid "When the interactive PDF viewer should load. \"On Click\" is best for performance."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:172
+msgid "Default Width"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:178
+msgid "CSS width value (e.g., 100%, 800px, 50vw)."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:186
+msgid "Toolbar Options"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:194
+msgid "Download Button"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:200
+msgid "Show download button in the viewer toolbar."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:207
+msgid "Print Button"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:213
+msgid "Show print button in the viewer toolbar."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:220
+msgid "Fullscreen Button"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:226
+msgid "Show fullscreen button in the viewer toolbar."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:233
+msgid "Cache Settings"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:241
+msgid "Cache Duration"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:249
+msgid "Days to keep orphaned preview images before cleanup."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:288
+msgid "Processing..."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:289
+msgid "Clearing..."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:290
+msgid "Success!"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:291
+msgid "An error occurred."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:292
+msgid "Are you sure you want to clear all cached previews? They will be regenerated as needed."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:294
+#, php-format
+msgid "Processed %d PDFs"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:296
+#, php-format
+msgid "%d failed"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:298
+#, php-format
+msgid "%d remaining"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:299
+msgid "Cache cleared successfully."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:301
+#, php-format
+msgid "%d files deleted."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:326
+msgid "General"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:330
+msgid "Server Info"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:334
+msgid "Tools"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:386
+msgid "Server Capabilities"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:388
+msgid "These capabilities determine how PDF previews are generated on your server."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:394
+msgid "Feature"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:395
+msgid "Status"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:396
+msgid "Notes"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:401
+msgid "ImageMagick"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:404
+msgid "Available"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:406
+msgid "Not Available"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:412
+msgid "Best method for PDF preview generation."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:414
+msgid "Install ImageMagick with PDF support for best results."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:420
+msgid "Ghostscript"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:423
+msgid "Available"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:425
+msgid "Not Available"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:431
+msgid "Fallback method for PDF rendering."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:433
+msgid "Optional fallback if ImageMagick is unavailable."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:439
+msgid "WebP Support"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:442
+msgid "Available"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:444
+msgid "Not Available"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:450
+msgid "Previews will be saved as WebP for smaller file sizes."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:452
+msgid "Previews will fall back to JPEG format."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:458
+msgid "PDF Info Tool"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:461
+msgid "Available"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:463
+msgid "Not Available"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:467
+msgid "Used for extracting PDF metadata (page count, dimensions)."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:471
+msgid "Shell Access"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:474
+msgid "Available"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:476
+msgid "Disabled"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:482
+msgid "Shell commands can be used for processing."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:484
+msgid "exec() is disabled. Some features may be limited."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:493
+msgid "Recommended Extraction Method"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:499
+msgid "✓ ImageMagick (Best)"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:502
+msgid "○ Ghostscript (Good)"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:511
+msgid "✗ No extraction method available"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:514
+msgid "Please install ImageMagick or Ghostscript to enable PDF preview generation."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:521
+msgid "Refresh Capabilities"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:542
+msgid "Bulk Process PDFs"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:544
+msgid "Generate preview images for PDFs that haven't been processed yet."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:550
+msgid "Total PDFs"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:554
+msgid "Processed"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:558
+msgid "Unprocessed"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:565
+msgid "Process Unprocessed PDFs"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:580
+msgid "Cache Management"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:582
+msgid "Manage the preview image cache."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:588
+msgid "Cached Files"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:592
+msgid "Cache Size"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:598
+msgid "Clear All Previews"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:604
+msgid "Note: Clearing the cache will remove all generated preview images. They will be regenerated when PDFs are viewed or re-processed."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:610
+msgid "Shortcode Reference"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:612
+msgid "Use this shortcode to embed PDFs in classic editor or widgets."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:619
+msgid "Available Attributes"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:623
+msgid "Attribute"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:624
+msgid "Default"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:625
+msgid "Description"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:631
+msgid "(required)"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:632
+msgid "Attachment ID of the PDF"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:637
+msgid "CSS width value"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:642
+msgid "click, visible, or immediate"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:647
+msgid "Show/hide toolbar"
+msgstr ""
+
+#: admin/class-mdpv-admin.php:658
+msgid "Configure how PDF previews are generated."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:662
+msgid "Default display settings for PDF viewers. These can be overridden per block/shortcode."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:666
+msgid "Choose which buttons appear in the viewer toolbar by default."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:670
+msgid "Configure preview image caching behavior."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:810
+msgid "Permission denied."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:832
+msgid "Permission denied."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:850
+msgid "Permission denied."
+msgstr ""
+
+#: admin/class-mdpv-admin.php:868
+msgid "Permission denied."
+msgstr ""
+
+#: blocks/pdf-viewer/block.json:9
+msgid "Embed PDFs with instant preview and zero layout shift."
+msgstr ""
+
+#: blocks/pdf-viewer/render.php:21
+msgid "PDF Viewer plugin not properly loaded."
+msgstr ""
+
+#: includes/class-mdpv-block.php:80
+msgid "PDF Viewer"
+msgstr ""
+
+#: includes/class-mdpv-block.php:81
+msgid "Embed PDFs with instant preview and zero layout shift."
+msgstr ""
+
+#: includes/class-mdpv-block.php:82
+msgid "Select PDF"
+msgstr ""
+
+#: includes/class-mdpv-block.php:83
+msgid "Replace"
+msgstr ""
+
+#: includes/class-mdpv-block.php:84
+msgid "Remove"
+msgstr ""
+
+#: includes/class-mdpv-block.php:85
+msgid "PDF Settings"
+msgstr ""
+
+#: includes/class-mdpv-block.php:86
+msgid "Display Settings"
+msgstr ""
+
+#: includes/class-mdpv-block.php:87
+msgid "Toolbar Options"
+msgstr ""
+
+#: includes/class-mdpv-block.php:88
+msgid "Width"
+msgstr ""
+
+#: includes/class-mdpv-block.php:89
+msgid "CSS value: 100%, 800px, etc."
+msgstr ""
+
+#: includes/class-mdpv-block.php:90
+msgid "Load Behavior"
+msgstr ""
+
+#: includes/class-mdpv-block.php:91
+msgid "When to load the interactive viewer"
+msgstr ""
+
+#: includes/class-mdpv-block.php:92
+msgid "On Click"
+msgstr ""
+
+#: includes/class-mdpv-block.php:93
+msgid "When Visible"
+msgstr ""
+
+#: includes/class-mdpv-block.php:94
+msgid "Immediately"
+msgstr ""
+
+#: includes/class-mdpv-block.php:95
+msgid "Show Toolbar"
+msgstr ""
+
+#: includes/class-mdpv-block.php:96
+msgid "Download Button"
+msgstr ""
+
+#: includes/class-mdpv-block.php:97
+msgid "Print Button"
+msgstr ""
+
+#: includes/class-mdpv-block.php:98
+msgid "Fullscreen Button"
+msgstr ""
+
+#: includes/class-mdpv-block.php:99
+msgid "Preview not available"
+msgstr ""
+
+#: includes/class-mdpv-block.php:100
+msgid "pages"
+msgstr ""
+
+#: includes/class-mdpv-block.php:101
+msgid "Upload a PDF or select one from your media library."
+msgstr ""
+

@@ -1,0 +1,592 @@
+/**
+ * MaxtDesign PDF Viewer - Frontend Styles
+ *
+ * Zero-CLS PDF viewer with accessible, responsive design.
+ *
+ * @package MaxtDesign\PDFViewer
+ * @since 1.0.0
+ */
+
+/* ==========================================================================
+   CSS Custom Properties (Theme Variables)
+   ========================================================================== */
+
+:root {
+    /* Colors */
+    --mdpv-color-bg: #f8f9fa;
+    --mdpv-color-bg-dark: #1a1a2e;
+    --mdpv-color-border: #dee2e6;
+    --mdpv-color-text: #212529;
+    --mdpv-color-text-muted: #6c757d;
+    --mdpv-color-primary: #0d6efd;
+    --mdpv-color-primary-hover: #0b5ed7;
+    --mdpv-color-error: #dc3545;
+    --mdpv-color-error-bg: #f8d7da;
+    --mdpv-color-overlay: rgba(0, 0, 0, 0.7);
+    --mdpv-color-overlay-light: rgba(0, 0, 0, 0.5);
+    
+    /* Toolbar */
+    --mdpv-toolbar-bg: #ffffff;
+    --mdpv-toolbar-border: #e9ecef;
+    --mdpv-toolbar-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    
+    /* Sizing */
+    --mdpv-border-radius: 8px;
+    --mdpv-border-radius-sm: 4px;
+    --mdpv-spacing-xs: 0.25rem;
+    --mdpv-spacing-sm: 0.5rem;
+    --mdpv-spacing-md: 1rem;
+    --mdpv-spacing-lg: 1.5rem;
+    
+    /* Typography */
+    --mdpv-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mdpv-font-size-sm: 0.875rem;
+    --mdpv-font-size-base: 1rem;
+    
+    /* Transitions */
+    --mdpv-transition-fast: 150ms ease;
+    --mdpv-transition-base: 250ms ease;
+    
+    /* Z-index layers */
+    --mdpv-z-preview: 1;
+    --mdpv-z-overlay: 10;
+    --mdpv-z-toolbar: 20;
+    --mdpv-z-loading: 30;
+    --mdpv-z-fullscreen: 999999;
+}
+
+/* ==========================================================================
+   Base Viewer Container
+   ========================================================================== */
+
+.mdpv-viewer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--mdpv-color-bg);
+    border: 1px solid var(--mdpv-color-border);
+    border-radius: var(--mdpv-border-radius);
+    overflow: hidden;
+    font-family: var(--mdpv-font-family);
+    line-height: 1.5;
+    
+    /* Container query support for future use */
+    container-type: inline-size;
+    container-name: mdpv-viewer;
+}
+
+/* Ensure aspect-ratio works correctly */
+.mdpv-viewer::before {
+    content: '';
+    display: block;
+}
+
+/* ==========================================================================
+   Preview Image
+   ========================================================================== */
+
+.mdpv-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center top;
+    z-index: var(--mdpv-z-preview);
+    background-color: var(--mdpv-color-bg);
+}
+
+/* Fade out preview when loading */
+.mdpv-viewer.mdpv-loading-active .mdpv-preview {
+    opacity: 0.4;
+    transition: opacity var(--mdpv-transition-base);
+}
+
+/* Hide preview when viewer is fully active */
+.mdpv-viewer.mdpv-active .mdpv-preview {
+    display: none;
+}
+
+/* ==========================================================================
+   Placeholder (No Preview Available)
+   ========================================================================== */
+
+.mdpv-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--mdpv-spacing-lg);
+    text-align: center;
+    color: var(--mdpv-color-text-muted);
+}
+
+.mdpv-placeholder-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: var(--mdpv-spacing-md);
+    opacity: 0.5;
+    stroke: currentColor;
+}
+
+.mdpv-placeholder-text {
+    font-size: var(--mdpv-font-size-sm);
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ==========================================================================
+   Activate Button
+   ========================================================================== */
+
+.mdpv-activate {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: var(--mdpv-z-overlay);
+    
+    display: inline-flex;
+    align-items: center;
+    gap: var(--mdpv-spacing-sm);
+    padding: var(--mdpv-spacing-sm) var(--mdpv-spacing-lg);
+    
+    background-color: var(--mdpv-color-overlay);
+    color: #ffffff;
+    border: none;
+    border-radius: var(--mdpv-border-radius);
+    
+    font-family: inherit;
+    font-size: var(--mdpv-font-size-base);
+    font-weight: 500;
+    line-height: 1.5;
+    text-decoration: none;
+    white-space: nowrap;
+    
+    cursor: pointer;
+    transition: background-color var(--mdpv-transition-fast),
+                transform var(--mdpv-transition-fast),
+                box-shadow var(--mdpv-transition-fast);
+}
+
+.mdpv-activate:hover {
+    background-color: var(--mdpv-color-overlay-light);
+    transform: translate(-50%, -50%) scale(1.02);
+}
+
+.mdpv-activate:focus {
+    outline: none;
+}
+
+.mdpv-activate:focus-visible {
+    outline: 3px solid var(--mdpv-color-primary);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 6px rgba(13, 110, 253, 0.25);
+}
+
+.mdpv-activate:active {
+    transform: translate(-50%, -50%) scale(0.98);
+}
+
+.mdpv-activate-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.mdpv-activate-text {
+    /* Text styling handled by button */
+}
+
+/* Hide activate button when loading or active */
+.mdpv-viewer.mdpv-loading-active .mdpv-activate,
+.mdpv-viewer.mdpv-active .mdpv-activate {
+    display: none;
+}
+
+/* ==========================================================================
+   Loading State
+   ========================================================================== */
+
+.mdpv-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: var(--mdpv-z-loading);
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--mdpv-spacing-sm);
+    
+    padding: var(--mdpv-spacing-md);
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: var(--mdpv-border-radius);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    
+    color: var(--mdpv-color-text);
+    font-size: var(--mdpv-font-size-sm);
+}
+
+.mdpv-loading[hidden] {
+    display: none;
+}
+
+/* Spinner */
+.mdpv-spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--mdpv-color-border);
+    border-top-color: var(--mdpv-color-primary);
+    border-radius: 50%;
+    animation: mdpv-spin 0.8s linear infinite;
+}
+
+@keyframes mdpv-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ==========================================================================
+   Error States
+   ========================================================================== */
+
+.mdpv-error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--mdpv-spacing-lg);
+    text-align: center;
+}
+
+.mdpv-error p {
+    margin: 0;
+    padding: var(--mdpv-spacing-md);
+    background-color: var(--mdpv-color-error-bg);
+    border: 1px solid var(--mdpv-color-error);
+    border-radius: var(--mdpv-border-radius-sm);
+    color: var(--mdpv-color-error);
+    font-size: var(--mdpv-font-size-sm);
+}
+
+.mdpv-error-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: var(--mdpv-z-loading);
+    max-width: 90%;
+}
+
+.mdpv-error-container[hidden] {
+    display: none;
+}
+
+.mdpv-error-message {
+    padding: var(--mdpv-spacing-md) var(--mdpv-spacing-lg);
+    background-color: var(--mdpv-color-error-bg);
+    border: 1px solid var(--mdpv-color-error);
+    border-radius: var(--mdpv-border-radius-sm);
+    color: var(--mdpv-color-error);
+    font-size: var(--mdpv-font-size-sm);
+    text-align: center;
+}
+
+/* ==========================================================================
+   Active Viewer State
+   ========================================================================== */
+
+.mdpv-viewer.mdpv-active {
+    background-color: var(--mdpv-color-bg-dark);
+}
+
+/* Focus indicator for keyboard navigation */
+.mdpv-viewer.mdpv-active:focus {
+    outline: 2px solid var(--mdpv-color-primary);
+    outline-offset: 2px;
+}
+
+.mdpv-viewer.mdpv-active:focus:not(:focus-visible) {
+    outline: none;
+}
+
+.mdpv-viewer.mdpv-active:focus-visible {
+    outline: 3px solid var(--mdpv-color-primary);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 6px rgba(13, 110, 253, 0.25);
+}
+
+/* Canvas container for PDF.js */
+.mdpv-canvas-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.mdpv-canvas-container canvas {
+    display: block;
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   Toolbar (Added by JavaScript)
+   ========================================================================== */
+
+.mdpv-toolbar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: var(--mdpv-z-toolbar);
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--mdpv-spacing-sm);
+    padding: var(--mdpv-spacing-sm) var(--mdpv-spacing-md);
+    
+    background-color: var(--mdpv-toolbar-bg);
+    border-top: 1px solid var(--mdpv-toolbar-border);
+    box-shadow: var(--mdpv-toolbar-shadow);
+}
+
+.mdpv-toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: var(--mdpv-spacing-xs);
+}
+
+/* Toolbar buttons */
+.mdpv-toolbar-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    
+    background-color: transparent;
+    border: 1px solid var(--mdpv-color-border);
+    border-radius: var(--mdpv-border-radius-sm);
+    
+    color: var(--mdpv-color-text);
+    cursor: pointer;
+    transition: all var(--mdpv-transition-fast);
+}
+
+.mdpv-toolbar-btn:hover {
+    background-color: var(--mdpv-color-bg);
+    border-color: var(--mdpv-color-primary);
+    color: var(--mdpv-color-primary);
+}
+
+.mdpv-toolbar-btn:focus-visible {
+    outline: 2px solid var(--mdpv-color-primary);
+    outline-offset: 2px;
+}
+
+.mdpv-toolbar-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.mdpv-toolbar-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Page navigation */
+.mdpv-toolbar-page-info {
+    display: flex;
+    align-items: center;
+    gap: var(--mdpv-spacing-xs);
+    font-size: var(--mdpv-font-size-sm);
+    color: var(--mdpv-color-text);
+}
+
+.mdpv-toolbar-page-input {
+    width: 3.5em;
+    padding: var(--mdpv-spacing-xs);
+    border: 1px solid var(--mdpv-color-border);
+    border-radius: var(--mdpv-border-radius-sm);
+    font-size: var(--mdpv-font-size-sm);
+    text-align: center;
+}
+
+.mdpv-toolbar-page-input:focus {
+    outline: none;
+    border-color: var(--mdpv-color-primary);
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+}
+
+/* Zoom controls */
+.mdpv-toolbar-zoom {
+    display: flex;
+    align-items: center;
+    gap: var(--mdpv-spacing-xs);
+}
+
+.mdpv-toolbar-zoom-label {
+    min-width: 3.5em;
+    font-size: var(--mdpv-font-size-sm);
+    text-align: center;
+}
+
+/* ==========================================================================
+   Fullscreen Mode
+   ========================================================================== */
+
+.mdpv-viewer.mdpv-fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    z-index: var(--mdpv-z-fullscreen);
+}
+
+/* Reset aspect ratio in fullscreen */
+.mdpv-viewer.mdpv-fullscreen {
+    aspect-ratio: auto !important;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+/* Small screens */
+@media (max-width: 576px) {
+    .mdpv-activate {
+        padding: var(--mdpv-spacing-xs) var(--mdpv-spacing-md);
+        font-size: var(--mdpv-font-size-sm);
+    }
+    
+    .mdpv-activate-icon {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .mdpv-toolbar {
+        padding: var(--mdpv-spacing-xs) var(--mdpv-spacing-sm);
+        flex-wrap: wrap;
+    }
+    
+    .mdpv-toolbar-btn {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .mdpv-toolbar-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .mdpv-toolbar-page-info {
+        font-size: 0.75rem;
+    }
+    
+    .mdpv-placeholder-icon {
+        width: 48px;
+        height: 48px;
+    }
+}
+
+/* ==========================================================================
+   Accessibility: Reduced Motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .mdpv-spinner {
+        animation: none;
+        border-top-color: var(--mdpv-color-primary);
+        opacity: 0.7;
+    }
+    
+    .mdpv-activate,
+    .mdpv-toolbar-btn,
+    .mdpv-preview {
+        transition: none;
+    }
+}
+
+/* ==========================================================================
+   Accessibility: High Contrast Mode
+   ========================================================================== */
+
+@media (prefers-contrast: high) {
+    .mdpv-viewer {
+        border-width: 2px;
+    }
+    
+    .mdpv-activate {
+        background-color: #000000;
+        border: 2px solid #ffffff;
+    }
+    
+    .mdpv-activate:focus-visible {
+        outline-width: 3px;
+    }
+    
+    .mdpv-toolbar-btn {
+        border-width: 2px;
+    }
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+    .mdpv-viewer {
+        break-inside: avoid;
+        border: 1px solid #000;
+    }
+    
+    .mdpv-activate,
+    .mdpv-loading,
+    .mdpv-toolbar {
+        display: none !important;
+    }
+    
+    .mdpv-preview {
+        position: static;
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+/* ==========================================================================
+   Dark Mode Support (Optional - respects user preference)
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+    .mdpv-viewer {
+        --mdpv-color-bg: #2d2d2d;
+        --mdpv-color-border: #404040;
+        --mdpv-color-text: #e9ecef;
+        --mdpv-color-text-muted: #adb5bd;
+        --mdpv-toolbar-bg: #1a1a1a;
+        --mdpv-toolbar-border: #333333;
+    }
+    
+    .mdpv-loading {
+        background-color: rgba(45, 45, 45, 0.95);
+    }
+}
+

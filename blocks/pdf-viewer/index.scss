@@ -1,0 +1,110 @@
+/**
+ * PDF Viewer Block - Editor Styles
+ *
+ * @package MaxtDesign\PDFViewer
+ * @since 1.0.0
+ */
+
+.mdpv-block-editor {
+	// Editor wrapper
+	background: #f0f0f0;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+// Placeholder state
+.mdpv-block-editor .components-placeholder {
+	min-height: 200px;
+}
+
+// Preview container
+.mdpv-block-preview {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 16px;
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
+
+// Preview image
+.mdpv-block-preview-image {
+	max-width: 100%;
+	max-height: 400px;
+	width: auto;
+	height: auto;
+	object-fit: contain;
+	border: 1px solid #e0e0e0;
+	border-radius: 2px;
+	margin-bottom: 12px;
+}
+
+// Placeholder when no preview
+.mdpv-block-placeholder {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 200px;
+	background: #f8f9fa;
+	border: 1px dashed #ccc;
+	border-radius: 4px;
+	margin-bottom: 12px;
+}
+
+.mdpv-block-placeholder-icon {
+	width: 64px;
+	height: 64px;
+	fill: #999;
+}
+
+// Loading state
+.mdpv-block-loading {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 200px;
+}
+
+// Info section
+.mdpv-block-info {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+	margin-bottom: 12px;
+	text-align: center;
+}
+
+.mdpv-block-filename {
+	font-weight: 500;
+	color: #1e1e1e;
+	word-break: break-word;
+}
+
+.mdpv-block-pages {
+	font-size: 12px;
+	color: #757575;
+}
+
+// Actions
+.mdpv-block-actions {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+// Responsive
+@media (max-width: 600px) {
+	.mdpv-block-preview {
+		padding: 12px;
+	}
+
+	.mdpv-block-preview-image {
+		max-height: 250px;
+	}
+}
+
