@@ -314,19 +314,14 @@ class Plugin {
 	/**
 	 * Initialize plugin
 	 *
-	 * Loads text domain and performs initialization tasks.
+	 * Performs initialization tasks.
+	 * Note: Text domain is auto-loaded by WordPress.org for hosted plugins.
 	 *
 	 * @return void
 	 */
 	public function init(): void {
-		// Load plugin text domain
-		// Note: For WordPress.org hosted plugins, this is auto-loaded, but we keep it for self-hosted installations.
-		// phpcs:ignore PluginCheck.CodeAnalysis.DiscouragedFunctions.load_plugin_textdomainFound -- Required for self-hosted plugin installations
-		load_plugin_textdomain(
-			'maxtdesign-pdf-viewer',
-			false,
-			dirname( MDPV_PLUGIN_BASENAME ) . '/languages'
-		);
+		// Text domain is automatically loaded by WordPress.org for hosted plugins.
+		// For self-hosted installations, translations should be placed in /languages/ directory.
 	}
 
 	/**
@@ -616,9 +611,22 @@ class Plugin {
 		// Normalize path for Windows compatibility
 		$worker_path = str_replace( array( '/', '\\' ), DIRECTORY_SEPARATOR, $worker_path );
 		
+		// Check if worker file exists locally
 		if ( ! file_exists( $worker_path ) ) {
-			// Fallback: use CDN worker URL if local file doesn't exist
-			$worker_url = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.mjs';
+			// Local file should exist - log warning but don't use CDN
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+				error_log( 'MDPV: Local PDF.js worker file not found at: ' . $worker_path );
+			}
+		}
+
+		// Check if cmaps directory exists locally
+		$cmaps_url = null;
+		$cmaps_path = MDPV_PLUGIN_DIR . 'vendor/pdfjs/cmaps/';
+		$cmaps_path = str_replace( array( '/', '\\' ), DIRECTORY_SEPARATOR, $cmaps_path );
+		
+		if ( is_dir( $cmaps_path ) ) {
+			$cmaps_url = MDPV_PLUGIN_URL . 'vendor/pdfjs/cmaps/';
 		}
 
 		return array(
@@ -628,6 +636,7 @@ class Plugin {
 			'viewerUrl'    => MDPV_PLUGIN_URL . 'assets/js/mdpv-viewer.js',
 			'pdfjsUrl'     => $pdfjs_url, // Local PDF.js URL if available
 			'pdfWorkerUrl' => $worker_url,
+			'cmapsUrl'     => $cmaps_url, // Local cmaps URL if available
 			'pluginUrl'    => MDPV_PLUGIN_URL,
 			'i18n'         => array(
 				'loading'        => __( 'Loading document...', 'maxtdesign-pdf-viewer' ),

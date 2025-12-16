@@ -805,8 +805,8 @@ class Extractor {
 
 				$success = imagewebp( $bg, $webp_path, $quality );
 
-				imagedestroy( $image );
-				imagedestroy( $bg );
+				// Clean up image resources (PHP 8.0+ compatible)
+				unset( $image, $bg );
 
 				if ( $success ) {
 					return true;
@@ -869,8 +869,8 @@ class Extractor {
 
 		$success = imagejpeg( $bg, $jpeg_path, $quality );
 
-		imagedestroy( $image );
-		imagedestroy( $bg );
+		// Clean up image resources (PHP 8.0+ compatible)
+		unset( $image, $bg );
 
 		return $success;
 	}

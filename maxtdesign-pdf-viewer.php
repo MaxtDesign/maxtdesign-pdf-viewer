@@ -9,7 +9,7 @@
  *
  * @wordpress-plugin
  * Plugin Name: MaxtDesign PDF Viewer
- * Plugin URI: https://maxtdesign.com/plugins/pdf-viewer
+ * Plugin URI: https://wordpress.org/plugins/maxtdesign-pdf-viewer/
  * Description: The fastest PDF viewer for WordPress. Sub-200ms load, zero layout shift, server-side preview extraction.
  * Version: 1.0.0
  * Requires at least: 6.4

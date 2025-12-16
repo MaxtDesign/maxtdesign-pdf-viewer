@@ -277,6 +277,7 @@
                 showFullscreen: viewer.dataset[ DATA.fullscreen ] !== 'false',
                 pdfjsUrl: config.pdfjsUrl || '', // Local PDF.js URL if available
                 workerUrl: config.pdfWorkerUrl || '',
+                cmapsUrl: config.cmapsUrl || '', // Local cmaps URL if available
                 i18n: config.i18n || {},
             };
         }

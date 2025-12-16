@@ -31,6 +31,15 @@ const filesToCopy = [
 	}
 ];
 
+// Directories to copy
+const dirsToCopy = [
+	{
+		src: path.join( nodeModulesDir, 'cmaps' ),
+		dest: path.join( vendorDir, 'cmaps' ),
+		name: 'cmaps'
+	}
+];
+
 /**
  * Ensure directory exists
  */
@@ -59,6 +68,53 @@ function copyFile( src, dest, name ) {
 	} catch ( error ) {
 		console.error( `❌ Error copying ${ name }:`, error.message );
 		return false;
+	}
+}
+
+/**
+ * Copy directory recursively
+ */
+function copyDir( src, dest, name ) {
+	try {
+		if ( ! fs.existsSync( src ) ) {
+			console.error( `❌ Source directory not found: ${ src }` );
+			return false;
+		}
+
+		// Ensure destination directory exists
+		ensureDir( dest );
+
+		// Get all files in source directory
+		const files = fs.readdirSync( src );
+		let fileCount = 0;
+		let totalSize = 0;
+
+		for ( const file of files ) {
+			const srcPath = path.join( src, file );
+			const destPath = path.join( dest, file );
+			const stats = fs.statSync( srcPath );
+
+			if ( stats.isDirectory() ) {
+				// Recursively copy subdirectories
+				const subResult = copyDir( srcPath, destPath, `${ name }/${ file }` );
+				if ( subResult && subResult.success ) {
+					fileCount += subResult.fileCount;
+					totalSize += subResult.totalSize;
+				}
+			} else {
+				// Copy file
+				fs.copyFileSync( srcPath, destPath );
+				fileCount++;
+				totalSize += stats.size;
+			}
+		}
+
+		const sizeKB = ( totalSize / 1024 ).toFixed( 2 );
+		console.log( `✓ Copied ${ name } directory (${ fileCount } files, ${ sizeKB } KB)` );
+		return { fileCount, totalSize, success: true };
+	} catch ( error ) {
+		console.error( `❌ Error copying ${ name } directory:`, error.message );
+		return { fileCount: 0, totalSize: 0, success: false };
 	}
 }
 
@@ -99,11 +155,29 @@ function main() {
 		}
 	} );
 
+	// Copy directories
+	dirsToCopy.forEach( ( dir ) => {
+		const result = copyDir( dir.src, dir.dest, dir.name );
+		if ( result && result.success ) {
+			successCount++;
+			// Create security index.php file in cmaps directory after copying
+			if ( dir.name === 'cmaps' ) {
+				const cmapsIndexPhpPath = path.join( dir.dest, 'index.php' );
+				if ( ! fs.existsSync( cmapsIndexPhpPath ) ) {
+					fs.writeFileSync( cmapsIndexPhpPath, '<?php\n// Silence is golden.\n' );
+					console.log( '✓ Created index.php security file in cmaps directory' );
+				}
+			}
+		} else {
+			failCount++;
+		}
+	} );
+
 	console.log( '' );
 	if ( failCount === 0 ) {
-		console.log( `✅ Successfully copied ${ successCount } file(s) to vendor/pdfjs/` );
+		console.log( `✅ Successfully copied ${ successCount } item(s) to vendor/pdfjs/` );
 	} else {
-		console.error( `❌ Failed to copy ${ failCount } file(s)` );
+		console.error( `❌ Failed to copy ${ failCount } item(s)` );
 		process.exit( 1 );
 	}
 }

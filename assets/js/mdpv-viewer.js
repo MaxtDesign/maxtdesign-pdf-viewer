@@ -217,11 +217,17 @@ export class MDPVViewer {
 		}
 
 		try {
-			const loadingTask = pdfjsLib.getDocument( {
+			const documentOptions = {
 				url: this.config.pdfUrl,
-				cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/cmaps/',
 				cMapPacked: true,
-			} );
+			};
+
+			// Use local cmaps URL if available, otherwise PDF.js will handle it
+			if ( this.config.cmapsUrl ) {
+				documentOptions.cMapUrl = this.config.cmapsUrl;
+			}
+
+			const loadingTask = pdfjsLib.getDocument( documentOptions );
 
 			this.pdfDoc = await loadingTask.promise;
 			this.totalPages = this.pdfDoc.numPages;
