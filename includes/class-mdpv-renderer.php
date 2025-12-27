@@ -90,6 +90,12 @@ class Renderer {
 			? $attributes['loadBehavior'] 
 			: $default_load_behavior;
 		
+		// Intelligent fallback: If no preview is available, load PDF.js immediately
+		// This provides better UX than showing a placeholder button
+		if ( ! $preview_url ) {
+			$load_behavior = 'immediate';
+		}
+		
 		$show_toolbar = $attributes['showToolbar'] ?? true;
 		
 		$custom_width = isset( $attributes['width'] ) && ! empty( $attributes['width'] )
@@ -217,11 +223,9 @@ class Renderer {
 					decoding="async"
 					fetchpriority="high"
 				>
-			<?php else : ?>
-				<?php echo self::render_placeholder( $pdf_title ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php endif; ?>
 
-			<?php if ( 'immediate' !== $load_behavior ) : ?>
+			<?php if ( 'immediate' !== $load_behavior && $preview_url ) : ?>
 				<button 
 					class="mdpv-activate" 
 					type="button" 
