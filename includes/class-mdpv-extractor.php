@@ -3,7 +3,8 @@
  * PDF Extraction Service
  *
  * Handles server-side PDF processing: metadata extraction and preview generation.
- * Supports ImageMagick (preferred) and Ghostscript (fallback) methods.
+ * Uses ImageMagick PHP extension (preferred) and basic PHP parsing (fallback).
+ * Note: CLI tools (Ghostscript, pdfinfo, cwebp) are no longer supported for security reasons.
  *
  * @package     MaxtDesign\PDFViewer
  * @since       1.0.0
@@ -23,7 +24,8 @@ defined( 'ABSPATH' ) || exit;
  * PDF Extraction Service Class
  *
  * Handles server-side PDF processing: metadata extraction and preview generation.
- * Supports ImageMagick (preferred) and Ghostscript (fallback) methods.
+ * Uses ImageMagick PHP extension (preferred) and basic PHP parsing (fallback).
+ * Note: CLI tools (Ghostscript, pdfinfo, cwebp) are no longer supported for security reasons.
  */
 class Extractor {
 
@@ -180,7 +182,7 @@ class Extractor {
 	 *     exec_enabled: bool,
 	 *     extraction_available: bool,
 	 *     recommended_method: string
-	 * } Capabilities array.
+	 * } Capabilities array. Note: ghostscript, pdfinfo, cwebp, and exec_enabled are always false for security reasons.
 	 */
 	public function get_capabilities(): array {
 		return $this->compatibility->get_capabilities();
@@ -250,8 +252,7 @@ class Extractor {
 	 *
 	 * Tries multiple extraction methods in order of preference:
 	 * 1. ImageMagick (most reliable for dimensions)
-	 * 2. pdfinfo CLI tool (best for metadata)
-	 * 3. Basic PHP parsing (fallback)
+	 * 2. Basic PHP parsing (fallback)
 	 *
 	 * @param string $pdf_path Full path to PDF file.
 	 * @return array{page_count: int, width: int, height: int, title: string, author: string}|null
@@ -263,27 +264,11 @@ class Extractor {
 		if ( $capabilities['imagemagick_pdf'] ) {
 			$metadata = $this->extract_metadata_imagemagick( $pdf_path );
 			if ( $metadata ) {
-				// ImageMagick doesn't get title/author well, try pdfinfo for those
-				if ( $capabilities['pdfinfo'] && ( empty( $metadata['title'] ) || empty( $metadata['author'] ) ) ) {
-					$pdfinfo_data = $this->extract_metadata_pdfinfo( $pdf_path );
-					if ( $pdfinfo_data ) {
-						$metadata['title']  = $pdfinfo_data['title'] ?: $metadata['title'];
-						$metadata['author'] = $pdfinfo_data['author'] ?: $metadata['author'];
-					}
-				}
 				return $metadata;
 			}
 		}
 
-		// Fall back to pdfinfo
-		if ( $capabilities['pdfinfo'] ) {
-			$metadata = $this->extract_metadata_pdfinfo( $pdf_path );
-			if ( $metadata ) {
-				return $metadata;
-			}
-		}
-
-		// Last resort: basic PHP parsing
+		// Fall back to basic PHP parsing
 		return $this->extract_metadata_basic( $pdf_path );
 	}
 
@@ -329,66 +314,6 @@ class Extractor {
 		}
 	}
 
-	/**
-	 * Extract metadata using pdfinfo CLI tool
-	 *
-	 * @param string $pdf_path Path to PDF file.
-	 * @return array{page_count: int, width: int, height: int, title: string, author: string}|null
-	 */
-	private function extract_metadata_pdfinfo( string $pdf_path ): ?array {
-		if ( ! $this->compatibility->get_capabilities()['exec_enabled'] ) {
-			return null;
-		}
-
-		$output     = [];
-		$return_var = 0;
-
-		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.system_calls_exec
-		exec(
-			sprintf( 'pdfinfo %s 2>/dev/null', escapeshellarg( $pdf_path ) ),
-			$output,
-			$return_var
-		);
-
-		if ( 0 !== $return_var || empty( $output ) ) {
-			return null;
-		}
-
-		$metadata = [
-			'page_count' => 1,
-			'width'      => 612,  // Default US Letter width in points
-			'height'     => 792,  // Default US Letter height in points
-			'title'      => '',
-			'author'     => '',
-		];
-
-		foreach ( $output as $line ) {
-			// Page count: "Pages:          47"
-			if ( preg_match( '/^Pages:\s+(\d+)/i', $line, $matches ) ) {
-				$metadata['page_count'] = (int) $matches[1];
-			}
-			// Page size: "Page size:      612 x 792 pts (letter)"
-			elseif ( preg_match( '/^Page size:\s+([\d.]+)\s*x\s*([\d.]+)/i', $line, $matches ) ) {
-				$metadata['width']  = (int) round( (float) $matches[1] );
-				$metadata['height'] = (int) round( (float) $matches[2] );
-			}
-			// Title: "Title:          My Document"
-			elseif ( preg_match( '/^Title:\s+(.+)$/i', $line, $matches ) ) {
-				$metadata['title'] = sanitize_text_field( trim( $matches[1] ) );
-			}
-			// Author: "Author:         John Doe"
-			elseif ( preg_match( '/^Author:\s+(.+)$/i', $line, $matches ) ) {
-				$metadata['author'] = sanitize_text_field( trim( $matches[1] ) );
-			}
-		}
-
-		// Validate we got meaningful data
-		if ( $metadata['page_count'] < 1 ) {
-			return null;
-		}
-
-		return $metadata;
-	}
 
 	/**
 	 * Extract basic metadata by parsing PDF structure
@@ -477,7 +402,7 @@ class Extractor {
 	/**
 	 * Generate preview image for PDF
 	 *
-	 * Tries ImageMagick first, then Ghostscript fallback.
+	 * Uses ImageMagick PHP extension for preview generation.
 	 *
 	 * @param int    $attachment_id Attachment ID.
 	 * @param string $pdf_path      Full path to PDF file.
@@ -502,7 +427,7 @@ class Extractor {
 
 		$capabilities = $this->compatibility->get_capabilities();
 
-		// Try ImageMagick first (with memory safety)
+		// Try ImageMagick (with memory safety)
 		if ( $capabilities['imagemagick_pdf'] ) {
 			$result = $this->generate_preview_imagemagick_safe(
 				$pdf_path,
@@ -520,49 +445,10 @@ class Extractor {
 			}
 		}
 
-		// Try Ghostscript fallback
-		if ( $capabilities['ghostscript'] ) {
-			$result = $this->generate_preview_ghostscript(
-				$pdf_path,
-				$output_path,
-				$preset['resolution'],
-				$preset['quality']
-			);
-
-			if ( $result ) {
-				return [
-					'success' => true,
-					'path'    => 'mdpv-cache/' . $output_file,
-					'method'  => 'ghostscript',
-				];
-			}
-
-			// If we have Ghostscript but no WebP support, try JPEG fallback
-			if ( ! $capabilities['gd_webp'] && ! $capabilities['cwebp'] ) {
-				$jpeg_file = $attachment_id . '-p1.jpg';
-				$jpeg_path = $cache_dir . $jpeg_file;
-
-				$result = $this->generate_preview_ghostscript_jpeg(
-					$pdf_path,
-					$jpeg_path,
-					$preset['resolution'],
-					$preset['quality']
-				);
-
-				if ( $result ) {
-					return [
-						'success' => true,
-						'path'    => 'mdpv-cache/' . $jpeg_file,
-						'method'  => 'ghostscript-jpeg',
-					];
-				}
-			}
-		}
-
 		// No extraction method available
 		return [
 			'success' => false,
-			'error'   => __( 'No preview extraction method available. Install ImageMagick or Ghostscript.', 'maxtdesign-pdf-viewer' ),
+			'error'   => __( 'No preview extraction method available. Please install the ImageMagick PHP extension with PDF support.', 'maxtdesign-pdf-viewer' ),
 		];
 	}
 
@@ -677,108 +563,11 @@ class Extractor {
 		return $this->generate_preview_imagemagick( $pdf_path, $output_path, $resolution, $quality );
 	}
 
-	/**
-	 * Generate preview using Ghostscript CLI
-	 *
-	 * Ghostscript renders to PNG, then we convert to WebP.
-	 * This is the fallback when ImageMagick is unavailable.
-	 *
-	 * @param string $pdf_path    Full path to PDF file.
-	 * @param string $output_path Full path for output WebP file.
-	 * @param int    $resolution  Resolution in DPI.
-	 * @param int    $quality     WebP quality (0-100).
-	 * @return bool True on success.
-	 */
-	private function generate_preview_ghostscript(
-		string $pdf_path,
-		string $output_path,
-		int $resolution,
-		int $quality
-	): bool {
-		$capabilities = $this->compatibility->get_capabilities();
-
-		if ( ! $capabilities['exec_enabled'] || ! $capabilities['ghostscript'] ) {
-			return false;
-		}
-
-		// Create unique temp file for PNG intermediate
-		$temp_png = $this->get_temp_file_path( 'png' );
-
-		if ( ! $temp_png ) {
-			return false;
-		}
-
-		try {
-			// Build Ghostscript command
-			// -dNOPAUSE: Don't pause between pages
-			// -dBATCH: Exit after processing
-			// -dSAFER: Security flag (restricts file operations)
-			// -sDEVICE=png16m: 24-bit RGB PNG output
-			// -r{resolution}: Resolution in DPI
-			// -dFirstPage=1 -dLastPage=1: Only first page
-			// -dTextAlphaBits=4 -dGraphicsAlphaBits=4: Anti-aliasing
-			// -sOutputFile: Output file path
-			$gs_command = sprintf(
-				'gs -dNOPAUSE -dBATCH -dSAFER -sDEVICE=png16m -r%d -dFirstPage=1 -dLastPage=1 -dTextAlphaBits=4 -dGraphicsAlphaBits=4 -sOutputFile=%s %s 2>/dev/null',
-				$resolution,
-				escapeshellarg( $temp_png ),
-				escapeshellarg( $pdf_path )
-			);
-
-			$output     = [];
-			$return_var = 0;
-
-			// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.system_calls_exec
-			exec( $gs_command, $output, $return_var );
-
-			// Check if PNG was created
-			if ( 0 !== $return_var || ! file_exists( $temp_png ) || filesize( $temp_png ) === 0 ) {
-				$this->cleanup_temp_file( $temp_png );
-				return false;
-			}
-
-			// Convert PNG to WebP
-			$webp_success = $this->convert_png_to_webp( $temp_png, $output_path, $quality );
-
-			// Clean up temp PNG
-			$this->cleanup_temp_file( $temp_png );
-
-			if ( $webp_success && file_exists( $output_path ) && filesize( $output_path ) > 0 ) {
-				/**
-				 * Fires after preview is generated
-				 *
-				 * @since 1.0.0
-				 * @param string $output_path Path to generated preview.
-				 * @param string $pdf_path    Path to source PDF.
-				 * @param string $method      Extraction method used.
-				 */
-				do_action( 'mdpv_preview_generated', $output_path, $pdf_path, 'ghostscript' );
-
-				return true;
-			}
-
-			return false;
-
-		} catch ( \Exception $e ) {
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-				error_log( 'MDPV Ghostscript preview error: ' . $e->getMessage() );
-			}
-
-			// Clean up on failure
-			$this->cleanup_temp_file( $temp_png );
-			if ( file_exists( $output_path ) ) {
-				wp_delete_file( $output_path );
-			}
-
-			return false;
-		}
-	}
 
 	/**
 	 * Convert PNG to WebP
 	 *
-	 * Tries GD first (no external dependency), then cwebp CLI.
+	 * Uses GD library with WebP support.
 	 *
 	 * @param string $png_path  Path to source PNG.
 	 * @param string $webp_path Path for output WebP.
@@ -788,7 +577,7 @@ class Extractor {
 	private function convert_png_to_webp( string $png_path, string $webp_path, int $quality ): bool {
 		$capabilities = $this->compatibility->get_capabilities();
 
-		// Try GD first (most common)
+		// Use GD library (only method supported for security)
 		if ( $capabilities['gd_webp'] ) {
 			$image = imagecreatefrompng( $png_path );
 
@@ -814,26 +603,7 @@ class Extractor {
 			}
 		}
 
-		// Fall back to cwebp CLI
-		if ( $capabilities['exec_enabled'] && $capabilities['cwebp'] ) {
-			$cwebp_command = sprintf(
-				'cwebp -q %d %s -o %s 2>/dev/null',
-				$quality,
-				escapeshellarg( $png_path ),
-				escapeshellarg( $webp_path )
-			);
-
-			$output     = [];
-			$return_var = 0;
-
-			// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.system_calls_exec
-			exec( $cwebp_command, $output, $return_var );
-
-			return 0 === $return_var && file_exists( $webp_path );
-		}
-
-		// Last resort: keep as PNG (not ideal but functional)
-		// Actually, let's return false - we want WebP specifically
+		// WebP conversion not available
 		return false;
 	}
 
@@ -913,94 +683,6 @@ class Extractor {
 		}
 	}
 
-	/**
-	 * Generate preview using Ghostscript with JPEG output
-	 *
-	 * Fallback when WebP conversion is not available.
-	 *
-	 * @param string $pdf_path    Full path to PDF file.
-	 * @param string $output_path Full path for output JPEG file.
-	 * @param int    $resolution  Resolution in DPI.
-	 * @param int    $quality     JPEG quality (0-100).
-	 * @return bool True on success.
-	 */
-	private function generate_preview_ghostscript_jpeg(
-		string $pdf_path,
-		string $output_path,
-		int $resolution,
-		int $quality
-	): bool {
-		$capabilities = $this->compatibility->get_capabilities();
-
-		if ( ! $capabilities['exec_enabled'] || ! $capabilities['ghostscript'] ) {
-			return false;
-		}
-
-		// Create unique temp file for PNG intermediate
-		$temp_png = $this->get_temp_file_path( 'png' );
-
-		if ( ! $temp_png ) {
-			return false;
-		}
-
-		try {
-			// Build Ghostscript command
-			$gs_command = sprintf(
-				'gs -dNOPAUSE -dBATCH -dSAFER -sDEVICE=png16m -r%d -dFirstPage=1 -dLastPage=1 -dTextAlphaBits=4 -dGraphicsAlphaBits=4 -sOutputFile=%s %s 2>/dev/null',
-				$resolution,
-				escapeshellarg( $temp_png ),
-				escapeshellarg( $pdf_path )
-			);
-
-			$output     = [];
-			$return_var = 0;
-
-			// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.system_calls_exec
-			exec( $gs_command, $output, $return_var );
-
-			// Check if PNG was created
-			if ( 0 !== $return_var || ! file_exists( $temp_png ) || filesize( $temp_png ) === 0 ) {
-				$this->cleanup_temp_file( $temp_png );
-				return false;
-			}
-
-			// Convert PNG to JPEG
-			$jpeg_success = $this->convert_png_to_jpeg( $temp_png, $output_path, $quality );
-
-			// Clean up temp PNG
-			$this->cleanup_temp_file( $temp_png );
-
-			if ( $jpeg_success && file_exists( $output_path ) && filesize( $output_path ) > 0 ) {
-				/**
-				 * Fires after preview is generated
-				 *
-				 * @since 1.0.0
-				 * @param string $output_path Path to generated preview.
-				 * @param string $pdf_path    Path to source PDF.
-				 * @param string $method      Extraction method used.
-				 */
-				do_action( 'mdpv_preview_generated', $output_path, $pdf_path, 'ghostscript-jpeg' );
-
-				return true;
-			}
-
-			return false;
-
-		} catch ( \Exception $e ) {
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-				error_log( 'MDPV Ghostscript JPEG preview error: ' . $e->getMessage() );
-			}
-
-			// Clean up on failure
-			$this->cleanup_temp_file( $temp_png );
-			if ( file_exists( $output_path ) ) {
-				wp_delete_file( $output_path );
-			}
-
-			return false;
-		}
-	}
 
 	/**
 	 * Log error for attachment

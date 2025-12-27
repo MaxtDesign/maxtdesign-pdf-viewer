@@ -2,8 +2,9 @@
 /**
  * Server Compatibility Checker Class
  *
- * Detects server capabilities for PDF processing (ImageMagick, Ghostscript, etc.)
+ * Detects server capabilities for PDF processing (ImageMagick PHP extension, GD library)
  * and provides diagnostic information for administrators.
+ * Note: CLI tools (Ghostscript, pdfinfo, cwebp) are no longer supported for security reasons.
  *
  * @package     MaxtDesign\PDFViewer
  * @since       1.0.0
@@ -83,7 +84,8 @@ class Compatibility {
 		];
 
 		// Determine if extraction is available
-		$capabilities['extraction_available'] = $capabilities['imagemagick'] || $capabilities['ghostscript'];
+		// Note: Only ImageMagick PHP extension is supported (no CLI tools for security)
+		$capabilities['extraction_available'] = $capabilities['imagemagick'];
 
 		// Determine recommended method
 		$capabilities['recommended_method'] = $this->get_recommended_method( $capabilities );
@@ -115,28 +117,37 @@ class Compatibility {
 	/**
 	 * Check if Ghostscript is available via command line
 	 *
-	 * @return bool True if 'gs' command is available.
+	 * Note: This method always returns false as we no longer use exec() for security reasons.
+	 * Ghostscript CLI is not supported. Use ImageMagick PHP extension instead.
+	 *
+	 * @return bool Always returns false.
 	 */
 	public function has_ghostscript(): bool {
-		return $this->command_exists( 'gs' );
+		return false;
 	}
 
 	/**
 	 * Check if pdfinfo command is available
 	 *
-	 * @return bool True if 'pdfinfo' command is available.
+	 * Note: This method always returns false as we no longer use exec() for security reasons.
+	 * pdfinfo CLI is not supported. Use ImageMagick PHP extension or basic parsing instead.
+	 *
+	 * @return bool Always returns false.
 	 */
 	public function has_pdfinfo(): bool {
-		return $this->command_exists( 'pdfinfo' );
+		return false;
 	}
 
 	/**
 	 * Check if cwebp command is available
 	 *
-	 * @return bool True if 'cwebp' command is available.
+	 * Note: This method always returns false as we no longer use exec() for security reasons.
+	 * cwebp CLI is not supported. Use GD library with WebP support instead.
+	 *
+	 * @return bool Always returns false.
 	 */
 	public function has_cwebp(): bool {
-		return $this->command_exists( 'cwebp' );
+		return false;
 	}
 
 	/**
@@ -164,27 +175,23 @@ class Compatibility {
 	/**
 	 * Check if PHP exec() function is enabled
 	 *
-	 * @return bool True if exec() is not disabled.
+	 * Note: This method always returns false as we no longer use exec() for security reasons.
+	 * All functionality now uses PHP extensions (ImageMagick, GD) instead of CLI tools.
+	 *
+	 * @return bool Always returns false.
 	 */
 	public function is_exec_enabled(): bool {
-		$disabled = ini_get( 'disable_functions' );
-		if ( empty( $disabled ) ) {
-			return function_exists( 'exec' );
-		}
-
-		$disabled = explode( ',', $disabled );
-		$disabled = array_map( 'trim', $disabled );
-
-		return ! in_array( 'exec', $disabled, true ) && function_exists( 'exec' );
+		return false;
 	}
 
 	/**
 	 * Get recommended extraction method based on available capabilities
 	 *
-	 * Priority: ImageMagick > Ghostscript > none
+	 * Priority: ImageMagick > none
+	 * Note: Ghostscript CLI is no longer supported for security reasons.
 	 *
 	 * @param array<string, mixed>|null $capabilities Optional capabilities array. If not provided, will fetch fresh.
-	 * @return string Recommended method: 'imagemagick', 'ghostscript', or 'none'.
+	 * @return string Recommended method: 'imagemagick' or 'none'.
 	 */
 	public function get_recommended_method( ?array $capabilities = null ): string {
 		if ( null === $capabilities ) {
@@ -193,10 +200,6 @@ class Compatibility {
 
 		if ( ! empty( $capabilities['imagemagick'] ) && $capabilities['imagemagick'] ) {
 			return 'imagemagick';
-		}
-
-		if ( ! empty( $capabilities['ghostscript'] ) && $capabilities['ghostscript'] ) {
-			return 'ghostscript';
 		}
 
 		return 'none';
@@ -223,30 +226,9 @@ class Compatibility {
 					: __( 'Not available', 'maxtdesign-pdf-viewer' ),
 			],
 			[
-				'name'    => __( 'Ghostscript', 'maxtdesign-pdf-viewer' ),
-				'status'  => $capabilities['ghostscript'],
-				'message' => $capabilities['ghostscript']
-					? __( 'Available (gs command found)', 'maxtdesign-pdf-viewer' )
-					: __( 'Not available', 'maxtdesign-pdf-viewer' ),
-			],
-			[
-				'name'    => __( 'PDF Info Tool', 'maxtdesign-pdf-viewer' ),
-				'status'  => $capabilities['pdfinfo'],
-				'message' => $capabilities['pdfinfo']
-					? __( 'Available (pdfinfo command found)', 'maxtdesign-pdf-viewer' )
-					: __( 'Not available', 'maxtdesign-pdf-viewer' ),
-			],
-			[
 				'name'    => __( 'WebP Support', 'maxtdesign-pdf-viewer' ),
-				'status'  => $capabilities['gd_webp'] || $capabilities['cwebp'],
+				'status'  => $capabilities['gd_webp'],
 				'message' => $this->get_webp_status_message( $capabilities ),
-			],
-			[
-				'name'    => __( 'PHP exec()', 'maxtdesign-pdf-viewer' ),
-				'status'  => $capabilities['exec_enabled'],
-				'message' => $capabilities['exec_enabled']
-					? __( 'Enabled', 'maxtdesign-pdf-viewer' )
-					: __( 'Disabled', 'maxtdesign-pdf-viewer' ),
 			],
 		];
 
@@ -273,42 +255,14 @@ class Compatibility {
 	}
 
 	/**
-	 * Check if a command exists in the system PATH
-	 *
-	 * @param string $command Command name to check.
-	 * @return bool True if command is found.
-	 */
-	private function command_exists( string $command ): bool {
-		if ( ! $this->is_exec_enabled() ) {
-			return false;
-		}
-
-		$output     = [];
-		$return_var = 0;
-
-		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.system_calls_exec
-		exec( sprintf( 'which %s 2>/dev/null', escapeshellarg( $command ) ), $output, $return_var );
-
-		return 0 === $return_var && ! empty( $output );
-	}
-
-	/**
 	 * Get WebP support status message
 	 *
 	 * @param array<string, mixed> $capabilities Capabilities array.
 	 * @return string Status message.
 	 */
 	private function get_webp_status_message( array $capabilities ): string {
-		if ( $capabilities['gd_webp'] && $capabilities['cwebp'] ) {
-			return __( 'GD library with WebP support and cwebp command available', 'maxtdesign-pdf-viewer' );
-		}
-
 		if ( $capabilities['gd_webp'] ) {
 			return __( 'GD library with WebP support', 'maxtdesign-pdf-viewer' );
-		}
-
-		if ( $capabilities['cwebp'] ) {
-			return __( 'cwebp command available', 'maxtdesign-pdf-viewer' );
 		}
 
 		return __( 'Not available', 'maxtdesign-pdf-viewer' );
@@ -323,7 +277,7 @@ class Compatibility {
 	private function determine_overall_status( array $capabilities ): string {
 		if ( $capabilities['extraction_available'] ) {
 			// Good: Has extraction method and WebP support
-			if ( $capabilities['gd_webp'] || $capabilities['cwebp'] ) {
+			if ( $capabilities['gd_webp'] ) {
 				return 'good';
 			}
 			// Limited: Has extraction but no WebP
@@ -346,19 +300,11 @@ class Compatibility {
 				return __( 'Server fully configured for PDF preview extraction.', 'maxtdesign-pdf-viewer' );
 
 			case 'limited':
-				$method = $capabilities['recommended_method'];
-				if ( 'none' !== $method ) {
-					return sprintf(
-						/* translators: %s: Extraction method name */
-						__( 'PDF extraction available via %s, but WebP conversion is not available. Preview images will use JPEG format.', 'maxtdesign-pdf-viewer' ),
-						$method === 'imagemagick' ? __( 'ImageMagick', 'maxtdesign-pdf-viewer' ) : __( 'Ghostscript', 'maxtdesign-pdf-viewer' )
-					);
-				}
-				return __( 'PDF extraction is available, but WebP conversion is not. Preview images will use JPEG format.', 'maxtdesign-pdf-viewer' );
+				return __( 'PDF extraction available via ImageMagick, but WebP conversion is not available. Preview images will use JPEG format.', 'maxtdesign-pdf-viewer' );
 
 			case 'unavailable':
 			default:
-				return __( 'No PDF extraction methods available. Please install ImageMagick with PDF support or Ghostscript.', 'maxtdesign-pdf-viewer' );
+				return __( 'No PDF extraction methods available. Please install the ImageMagick PHP extension with PDF support.', 'maxtdesign-pdf-viewer' );
 		}
 	}
 }

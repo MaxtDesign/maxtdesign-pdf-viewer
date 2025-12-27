@@ -380,7 +380,7 @@ final class Admin {
 		$compatibility = $this->plugin->get_compatibility();
 		$capabilities  = $compatibility->get_capabilities();
 		$recommended   = $compatibility->get_recommended_method();
-		$webp_support = $capabilities['gd_webp'] || $capabilities['cwebp'];
+		$webp_support = $capabilities['gd_webp'];
 		?>
 		<div class="mdpv-server-info">
 			<h2><?php esc_html_e( 'Server Capabilities', 'maxtdesign-pdf-viewer' ); ?></h2>
@@ -417,25 +417,6 @@ final class Admin {
 						</td>
 					</tr>
 					<tr>
-						<td><strong><?php esc_html_e( 'Ghostscript', 'maxtdesign-pdf-viewer' ); ?></strong></td>
-						<td>
-							<?php if ( $capabilities['ghostscript'] ) : ?>
-								<span class="mdpv-status mdpv-status-success">✓ <?php esc_html_e( 'Available', 'maxtdesign-pdf-viewer' ); ?></span>
-							<?php else : ?>
-								<span class="mdpv-status mdpv-status-warning">✗ <?php esc_html_e( 'Not Available', 'maxtdesign-pdf-viewer' ); ?></span>
-							<?php endif; ?>
-						</td>
-						<td>
-							<?php
-							if ( $capabilities['ghostscript'] ) {
-								esc_html_e( 'Fallback method for PDF rendering.', 'maxtdesign-pdf-viewer' );
-							} else {
-								esc_html_e( 'Optional fallback if ImageMagick is unavailable.', 'maxtdesign-pdf-viewer' );
-							}
-							?>
-						</td>
-					</tr>
-					<tr>
 						<td><strong><?php esc_html_e( 'WebP Support', 'maxtdesign-pdf-viewer' ); ?></strong></td>
 						<td>
 							<?php if ( $webp_support ) : ?>
@@ -454,38 +435,6 @@ final class Admin {
 							?>
 						</td>
 					</tr>
-					<tr>
-						<td><strong><?php esc_html_e( 'PDF Info Tool', 'maxtdesign-pdf-viewer' ); ?></strong></td>
-						<td>
-							<?php if ( $capabilities['pdfinfo'] ) : ?>
-								<span class="mdpv-status mdpv-status-success">✓ <?php esc_html_e( 'Available', 'maxtdesign-pdf-viewer' ); ?></span>
-							<?php else : ?>
-								<span class="mdpv-status mdpv-status-warning">○ <?php esc_html_e( 'Not Available', 'maxtdesign-pdf-viewer' ); ?></span>
-							<?php endif; ?>
-						</td>
-						<td>
-							<?php esc_html_e( 'Used for extracting PDF metadata (page count, dimensions).', 'maxtdesign-pdf-viewer' ); ?>
-						</td>
-					</tr>
-					<tr>
-						<td><strong><?php esc_html_e( 'Shell Access', 'maxtdesign-pdf-viewer' ); ?></strong></td>
-						<td>
-							<?php if ( $capabilities['exec_enabled'] ) : ?>
-								<span class="mdpv-status mdpv-status-success">✓ <?php esc_html_e( 'Available', 'maxtdesign-pdf-viewer' ); ?></span>
-							<?php else : ?>
-								<span class="mdpv-status mdpv-status-warning">✗ <?php esc_html_e( 'Disabled', 'maxtdesign-pdf-viewer' ); ?></span>
-							<?php endif; ?>
-						</td>
-						<td>
-							<?php
-							if ( $capabilities['exec_enabled'] ) {
-								esc_html_e( 'Shell commands can be used for processing.', 'maxtdesign-pdf-viewer' );
-							} else {
-								esc_html_e( 'exec() is disabled. Some features may be limited.', 'maxtdesign-pdf-viewer' );
-							}
-							?>
-						</td>
-					</tr>
 				</tbody>
 			</table>
 
@@ -493,25 +442,14 @@ final class Admin {
 				<h3><?php esc_html_e( 'Recommended Extraction Method', 'maxtdesign-pdf-viewer' ); ?></h3>
 				<?php if ( ! empty( $recommended ) && 'none' !== $recommended ) : ?>
 					<p class="mdpv-method-badge mdpv-method-<?php echo esc_attr( $recommended ); ?>">
-						<?php
-						switch ( $recommended ) {
-							case 'imagemagick':
-								esc_html_e( '✓ ImageMagick (Best)', 'maxtdesign-pdf-viewer' );
-								break;
-							case 'ghostscript':
-								esc_html_e( '○ Ghostscript (Good)', 'maxtdesign-pdf-viewer' );
-								break;
-							default:
-								echo esc_html( ucfirst( $recommended ) );
-						}
-						?>
+						<?php esc_html_e( '✓ ImageMagick (Best)', 'maxtdesign-pdf-viewer' ); ?>
 					</p>
 				<?php else : ?>
 					<p class="mdpv-method-badge mdpv-method-none">
 						<?php esc_html_e( '✗ No extraction method available', 'maxtdesign-pdf-viewer' ); ?>
 					</p>
 					<p class="description">
-						<?php esc_html_e( 'Please install ImageMagick or Ghostscript to enable PDF preview generation.', 'maxtdesign-pdf-viewer' ); ?>
+						<?php esc_html_e( 'Please install the ImageMagick PHP extension with PDF support to enable PDF preview generation.', 'maxtdesign-pdf-viewer' ); ?>
 					</p>
 				<?php endif; ?>
 			</div>
