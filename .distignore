@@ -1,0 +1,89 @@
+# .distignore — files NOT shipped to wp.org SVN
+# Template baseline. Copy to plugin repo root and extend as needed.
+# See: hq/.claude/standards/wporg-svn-setup.md
+# See: hq/.claude/agents/development/wporg-release.md
+
+# Version control
+.git/
+.github/
+.gitignore
+.gitattributes
+.gitmodules
+
+# Agent tooling — NEVER ship these to users
+.claude/
+.cursorrules
+.cursor/
+
+# Node / JS tooling
+node_modules/
+package.json
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+.nvmrc
+
+# PHP tooling
+composer.json
+composer.lock
+# vendor/ intentionally omitted — this plugin ships vendor/pdfjs (pdf.js) at runtime
+
+# Testing
+tests/
+phpunit.xml
+phpunit.xml.dist
+.phpcs.xml
+.phpcs.xml.dist
+phpcs.xml
+phpcs.xml.dist
+.phpunit.result.cache
+
+# Editor / lint config
+.editorconfig
+.eslintrc
+.eslintrc.json
+.eslintrc.js
+.prettierrc
+.prettierrc.json
+.stylelintrc
+.vscode/
+.idea/
+
+# Build tooling (keep if plugin ships built output only)
+webpack.config.js
+rollup.config.js
+vite.config.js
+gulpfile.js
+Gruntfile.js
+src/
+# ^ Remove src/ if plugin ships pre-built assets from src/
+
+# wp.org marketing assets — published separately, NOT bundled into trunk
+.wporg-assets/
+
+# Documentation (wp.org uses readme.txt, not markdown)
+docs/
+CONTRIBUTING.md
+CHANGELOG.md
+CODE_OF_CONDUCT.md
+LICENSE.md
+# ^ readme.md is fine to keep OUT — wp.org reads readme.txt only
+
+# CI / deploy config
+.travis.yml
+.circleci/
+.gitlab-ci.yml
+bitbucket-pipelines.yml
+wp-env.json
+.wp-env.json
+
+# Misc developer files
+*.log
+*.bak
+*.swp
+.DS_Store
+Thumbs.db
+.distignore
+
+# Plugin-specific excludes
+# (none — vendor/pdfjs must remain in the SVN trunk; see skill Distignore Specifics)
