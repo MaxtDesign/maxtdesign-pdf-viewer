@@ -365,7 +365,7 @@ class Renderer {
 	/**
 	 * Handle shortcode rendering
 	 *
-	 * Usage: [pdf_viewer id="123" width="800px" load="click"]
+	 * Usage: [mdpv_viewer id="123" width="800px" load="click"]
 	 *
 	 * @param array  $atts    Shortcode attributes.
 	 * @param string $content Shortcode content (unused).
@@ -383,7 +383,7 @@ class Renderer {
 				'fullscreen' => '',
 			],
 			$atts,
-			'pdf_viewer'
+			'mdpv_viewer'
 		);
 
 		// Convert to render attributes format
@@ -416,6 +416,29 @@ class Renderer {
 		}
 
 		return self::render( $attributes );
+	}
+
+	/**
+	 * Handle legacy [pdf_viewer] shortcode
+	 *
+	 * Deprecated as of 1.1.0. Use [mdpv_viewer] instead.
+	 * Emits _doing_it_wrong() when WP_DEBUG is enabled so developers
+	 * can find and update usages. Silent to end users.
+	 * Will be removed in version 2.0.0.
+	 *
+	 * @param array  $atts    Shortcode attributes.
+	 * @param string $content Shortcode content (unused).
+	 * @return string HTML output.
+	 */
+	public static function shortcode_handler_legacy( $atts, $content = '' ): string {
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			_doing_it_wrong(
+				'[pdf_viewer]',
+				esc_html__( 'Use [mdpv_viewer] instead. [pdf_viewer] is deprecated as of 1.1.0 and will be removed in 2.0.0.', 'maxtdesign-pdf-viewer' ),
+				'1.1.0'
+			);
+		}
+		return self::shortcode_handler( $atts, $content );
 	}
 }
 

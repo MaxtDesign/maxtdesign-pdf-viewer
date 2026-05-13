@@ -286,8 +286,11 @@ class Plugin {
 		// Register Gutenberg block
 		add_action( 'init', array( Block::class, 'register' ) );
 
-		// Register shortcode (keep for backward compatibility)
-		add_shortcode( 'pdf_viewer', array( Renderer::class, 'shortcode_handler' ) );
+		// Canonical shortcode
+		add_shortcode( 'mdpv_viewer', array( Renderer::class, 'shortcode_handler' ) );
+
+		// Legacy alias — backward compatible, deprecated as of 1.1.0, removed in 2.0.0
+		add_shortcode( 'pdf_viewer', array( Renderer::class, 'shortcode_handler_legacy' ) );
 
 		// Track shortcode usage for conditional asset loading
 		add_filter( 'the_content', array( $this, 'detect_shortcode_usage' ), 0 );
@@ -497,7 +500,7 @@ class Plugin {
 	 * @return string Unmodified content.
 	 */
 	public function detect_shortcode_usage( string $content ): string {
-		if ( has_shortcode( $content, 'pdf_viewer' ) ) {
+		if ( has_shortcode( $content, 'mdpv_viewer' ) || has_shortcode( $content, 'pdf_viewer' ) ) {
 			$this->has_shortcode = true;
 		}
 		return $content;
