@@ -1,11 +1,11 @@
 === MaxtDesign PDF Viewer ===
 Contributors: slaacr
 Donate link: https://github.com/sponsors/MaxtDesign
-Tags: pdf, viewer, document, embed, gutenberg
+Tags: pdf, viewer, document, embed
 Requires at least: 6.4
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 8.1
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -110,6 +110,12 @@ Yes, the toolbar includes download, print, and fullscreen buttons. You can disab
 
 == Changelog ==
 
+= 1.0.1 =
+
+* Fix: shortcode-only pages now correctly enqueue the PDF viewer assets. Previously the `[pdf_viewer]` / `[mdpv_viewer]` shortcode rendered its markup but the loader script and stylesheet were not attached, leaving the viewer inert.
+* Compat: confirmed working with WordPress 7.0 ("Armstrong"). Bumped Tested up to.
+* Housekeeping: removed `gutenberg` from the Tags line per WordPress.org guidance; minor internal cleanup of orphaned detection code.
+
 = 1.0.0 =
 
 * Initial release
@@ -123,6 +129,10 @@ Yes, the toolbar includes download, print, and fullscreen buttons. You can disab
 * Cache management
 
 == Upgrade Notice ==
+
+= 1.0.1 =
+
+Fixes shortcode-only pages where the viewer markup rendered but the loader script never attached. Recommended for anyone using `[pdf_viewer]` or `[mdpv_viewer]` outside a block context.
 
 = 1.0.0 =
 

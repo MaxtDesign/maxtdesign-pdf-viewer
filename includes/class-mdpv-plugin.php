@@ -32,7 +32,7 @@ class Plugin {
 	 *
 	 * @var string
 	 */
-	public const VERSION = '1.0.0';
+	public const VERSION = '1.0.1';
 
 	/**
 	 * Database version for future migrations
@@ -110,13 +110,6 @@ class Plugin {
 	 * @var REST_API|null
 	 */
 	private ?REST_API $rest_api = null;
-
-	/**
-	 * Flag for shortcode usage detection
-	 *
-	 * @var bool
-	 */
-	private bool $has_shortcode = false;
 
 	/**
 	 * Get plugin instance (singleton)
@@ -291,9 +284,6 @@ class Plugin {
 
 		// Legacy alias — backward compatible, deprecated as of 1.1.0, removed in 2.0.0
 		add_shortcode( 'pdf_viewer', array( Renderer::class, 'shortcode_handler_legacy' ) );
-
-		// Track shortcode usage for conditional asset loading
-		add_filter( 'the_content', array( $this, 'detect_shortcode_usage' ), 0 );
 
 		// PDF upload processing
 		add_action( 'add_attachment', array( $this->extractor, 'process_upload' ) );
@@ -494,20 +484,12 @@ class Plugin {
 	}
 
 	/**
-	 * Detect shortcode usage in content
-	 *
-	 * @param string $content Post content.
-	 * @return string Unmodified content.
-	 */
-	public function detect_shortcode_usage( string $content ): string {
-		if ( has_shortcode( $content, 'mdpv_viewer' ) || has_shortcode( $content, 'pdf_viewer' ) ) {
-			$this->has_shortcode = true;
-		}
-		return $content;
-	}
-
-	/**
 	 * Check if current page needs PDF viewer assets
+	 *
+	 * Inspects the current post directly for the block or either shortcode,
+	 * mirroring the pattern used by Block::post_has_block(). Reading
+	 * $post->post_content during wp_enqueue_scripts (before the_content
+	 * has run) is what makes shortcode-only pages enqueue correctly.
 	 *
 	 * @return bool True if assets should be loaded.
 	 */
@@ -517,8 +499,8 @@ class Plugin {
 			return true;
 		}
 
-		// Check for shortcode
-		if ( $this->has_shortcode ) {
+		// Check for either shortcode in the post content
+		if ( $this->page_has_shortcode() ) {
 			return true;
 		}
 
@@ -531,29 +513,9 @@ class Plugin {
 	}
 
 	/**
-	 * Check if current post has PDF viewer block
+	 * Check if current post contains either PDF viewer shortcode
 	 *
-	 * @return bool True if post contains PDF viewer block.
-	 */
-	private function page_has_pdf_block(): bool {
-		global $post;
-
-		if ( ! $post instanceof \WP_Post ) {
-			return false;
-		}
-
-		// Check for our Gutenberg block
-		if ( has_block( 'maxtdesign/pdf-viewer', $post ) ) {
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Check if current post has PDF viewer shortcode
-	 *
-	 * @return bool True if post contains PDF viewer shortcode.
+	 * @return bool True if post contains [mdpv_viewer] or [pdf_viewer].
 	 */
 	private function page_has_shortcode(): bool {
 		global $post;
@@ -562,12 +524,8 @@ class Plugin {
 			return false;
 		}
 
-		// Check post content for shortcode
-		if ( has_shortcode( $post->post_content, 'pdf_viewer' ) ) {
-			return true;
-		}
-
-		return false;
+		return has_shortcode( $post->post_content, 'mdpv_viewer' )
+			|| has_shortcode( $post->post_content, 'pdf_viewer' );
 	}
 
 	/**

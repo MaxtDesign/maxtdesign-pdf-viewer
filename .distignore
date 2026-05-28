@@ -1,0 +1,85 @@
+# .distignore — files NOT shipped to wp.org SVN.
+#
+# This is a secondary safety net. The canonical filter is
+# tools/prepare-svn.sh, which uses an allow-list to copy only the
+# files that ship into svn-upload/trunk/. If something gets through
+# both, double-check the stage script first.
+
+# Version control
+.git/
+.github/
+.gitignore
+.gitattributes
+.gitmodules
+
+# Agent tooling — never ship
+.claude/
+.cursorrules
+.cursor/
+
+# Node / JS tooling
+node_modules/
+package.json
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+.nvmrc
+
+# PHP tooling
+composer.json
+composer.lock
+# vendor/ intentionally kept — ships vendor/pdfjs at runtime.
+
+# Testing / lint config
+tests/
+phpunit.xml
+phpunit.xml.dist
+.phpcs.xml
+.phpcs.xml.dist
+phpcs.xml
+phpcs.xml.dist
+.phpunit.result.cache
+.editorconfig
+.eslintrc
+.eslintrc.json
+.eslintrc.js
+.prettierrc
+.prettierrc.json
+.stylelintrc
+.vscode/
+.idea/
+
+# Build tooling
+webpack.config.js
+rollup.config.js
+vite.config.js
+gulpfile.js
+Gruntfile.js
+scripts/
+
+# Block source — only blocks/pdf-viewer/build/ + block.json + render.php ship
+blocks/pdf-viewer/edit.js
+blocks/pdf-viewer/index.js
+blocks/pdf-viewer/index.scss
+
+# wp.org marketing assets — uploaded separately
+.wporg-assets/
+
+# Documentation (wp.org reads readme.txt only)
+docs/
+CONTRIBUTING.md
+CHANGELOG.md
+CODE_OF_CONDUCT.md
+LICENSE.md
+
+# Release tooling and staging
+tools/
+svn-upload/
+
+# CI / deploy config
+.travis.yml
+.circleci/
+.gitlab-ci.yml
+bitbucket-pipelines.yml
+wp-env.json
+.wp-env.json

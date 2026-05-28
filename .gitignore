@@ -35,6 +35,9 @@ blocks/pdf-viewer/build/
 *.min.css.map
 *.min.js.map
 
+# wp.org SVN staging (output of tools/prepare-svn.sh)
+svn-upload/
+
 # IDE and Editor files
 .vscode/
 .idea/
