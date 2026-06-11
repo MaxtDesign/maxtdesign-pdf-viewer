@@ -5,7 +5,7 @@ Tags: pdf, viewer, document, embed
 Requires at least: 6.4
 Tested up to: 7.0
 Requires PHP: 8.1
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -109,6 +109,10 @@ Yes, the toolbar includes download, print, and fullscreen buttons. You can disab
 6. Settings page - Tools tab
 
 == Changelog ==
+
+= 1.0.2 =
+
+* Changed: plugin homepage (Plugin URI) now points to the official plugin page at maxtdesign.com/plugins/pdf-viewer (was the wordpress.org directory listing).
 
 = 1.0.1 =
 

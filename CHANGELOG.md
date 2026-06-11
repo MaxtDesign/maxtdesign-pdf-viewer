@@ -5,6 +5,11 @@ All notable changes to MaxtDesign PDF Viewer are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2026-06-11
+
+### Changed
+- Plugin URI now points to the official plugin page at `https://maxtdesign.com/plugins/pdf-viewer` (was the wordpress.org directory listing).
+
 ## [1.0.1] - 2026-05-28
 
 ### Fixed
@@ -27,5 +32,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - REST API endpoints under `/wp-json/mdpv/v1/`.
 - Daily scheduled cache cleanup.
 
+[1.0.2]: https://github.com/MaxtDesign/maxtdesign-pdf-viewer/releases/tag/v1.0.2
 [1.0.1]: https://github.com/MaxtDesign/maxtdesign-pdf-viewer/releases/tag/v1.0.1
 [1.0.0]: https://github.com/MaxtDesign/maxtdesign-pdf-viewer/releases/tag/v1.0.0
