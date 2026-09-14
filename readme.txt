@@ -114,8 +114,9 @@ Found a security issue? Please report it privately to security@maxtdesign.com ra
 in a public support thread. We aim to acknowledge reports within 3 business days and will agree a
 disclosure timeline with you.
 
-The full policy, including what to put in a report and what to expect back, is in SECURITY.md in
-the plugin's repository.
+Please include the plugin version, steps to reproduce, and the impact as you understand it. We will
+agree a disclosure timeline with you and credit you in the changelog unless you would rather stay
+anonymous. Please do not test against a site you do not own.
 
 This plugin is published on WordPress.org by the account `slaacr`, which is MaxtDesign. The account
 name predates the brand and WordPress.org does not support renaming accounts, so the two names
