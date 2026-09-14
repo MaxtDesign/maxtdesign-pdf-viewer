@@ -5,7 +5,7 @@ Tags: pdf, viewer, document, embed
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 8.1
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,7 +108,26 @@ Yes, the toolbar includes download, print, and fullscreen buttons. You can disab
 5. Settings page - Server Info tab
 6. Settings page - Tools tab
 
+== Security ==
+
+Found a security issue? Please report it privately to security@maxtdesign.com rather than posting
+in a public support thread. We aim to acknowledge reports within 3 business days and will agree a
+disclosure timeline with you.
+
+The full policy, including what to put in a report and what to expect back, is in SECURITY.md in
+the plugin's repository.
+
+This plugin is published on WordPress.org by the account `slaacr`, which is MaxtDesign. The account
+name predates the brand and WordPress.org does not support renaming accounts, so the two names
+differ. Anything published under `slaacr` is ours.
+
 == Changelog ==
+
+= 1.0.3 =
+* New: published security contact and vulnerability disclosure policy. Security issues now have a private reporting route (security@maxtdesign.com) instead of a public support thread, with a 3 business day acknowledgement target.
+* New: documented that the WordPress.org account `slaacr` is MaxtDesign, so it is clear who publishes this plugin.
+* Declared compatibility with WordPress 7.1.
+* No functional changes.
 
 = 1.0.2 =
 
@@ -133,6 +152,9 @@ Yes, the toolbar includes download, print, and fullscreen buttons. You can disab
 * Cache management
 
 == Upgrade Notice ==
+
+= 1.0.3 =
+Documentation and compatibility only. Adds a private security contact and confirms WordPress 7.1 support. No functional changes.
 
 = 1.0.1 =
 
