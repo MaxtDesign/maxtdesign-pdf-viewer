@@ -115,8 +115,8 @@ in a public support thread. We aim to acknowledge reports within 3 business days
 disclosure timeline with you.
 
 Please include the plugin version, steps to reproduce, and the impact as you understand it. We will
-agree a disclosure timeline with you and credit you in the changelog unless you would rather stay
-anonymous. Please do not test against a site you do not own.
+credit you in the changelog unless you would rather stay anonymous, and we ask that you do not test
+against a site you do not own.
 
 This plugin is published on WordPress.org by the account `slaacr`, which is MaxtDesign. The account
 name predates the brand and WordPress.org does not support renaming accounts, so the two names
