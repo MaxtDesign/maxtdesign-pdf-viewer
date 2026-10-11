@@ -75,6 +75,7 @@ LICENSE.md
 # Release tooling and staging
 tools/
 svn-upload/
+_build/
 
 # CI / deploy config
 .travis.yml

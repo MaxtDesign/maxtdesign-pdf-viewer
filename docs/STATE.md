@@ -1,5 +1,5 @@
 # STATE: maxtdesign-pdf-viewer
-Updated: 2026-09-13 by session
+Updated: 2026-10-11 by session (`.distignore` `_build` line only; the rest is still the 2026-09-13 seed)
 
 ## Identity
 Product: **MaxtDesign PDF Viewer**. Version 1.0.2.
@@ -30,7 +30,8 @@ None recorded. Backfill needed.
 Unfilled. Backfill needed.
 
 ## Verification state
-Unfilled. No claims made here rather than stale ones.
+Unfilled apart from the line below. No claims made here rather than stale ones.
+- 2026-10-11: `plugin-deliverables.php` passes (15 passed, 0 failed) after `.distignore` gained a `_build` line. The release gate writes its zip, SBOM and marker to `_build/`, and the deliverables check has required the line since 2026-10-09 (agent-runbooks pull request 3). Nothing else in the plugin changed and no version bump is needed: `.distignore` does not ship.
 
 ## History
 - `docs/STATE.md` (2026-09-13) → this seed file.
